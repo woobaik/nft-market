@@ -30,7 +30,7 @@ const MenuItems = ({ isMobile, active, setActive }) => {
               ? 'dark:text-white text-nft-black-1'
               : 'dark:text-nft-gray-3 text-nft-gray-2'
           }`}
-          onClick={() => console.log(element)}
+          onClick={() => setActive(element)}
         >
           <Link href={generateLink(index)}>{element}</Link>
         </ul>
@@ -39,11 +39,31 @@ const MenuItems = ({ isMobile, active, setActive }) => {
   );
 };
 
+const ButtonGroup = ({ setActive, router }) => {
+  const hasConnect = false;
+  return hasConnect ? (
+    <Button
+      btnTitle="Create"
+      classStyles="mx-2 rounded-xl"
+      onClick={() => setActive(null)}
+    />
+  ) : (
+    <Button
+      btnTitle="Connected"
+      classStyles="mx-2 rounded-xl"
+      handleClick={() => {
+        setActive(null);
+        router.push('/create-ntf');
+      }}
+    />
+  );
+};
+
 const NavBar = () => {
   const { theme, setTheme } = useTheme();
-  const [active, setActive] = useState(null);
+  const router = useRouter();
+  const [active, setActive] = useState();
 
-  console.log({ theme });
   return (
     <nav className="p-4 flexBetween z-10 w-full border-b-2 dark:bg-nft-dark dark:border-nft-black-1 border-nft-gray-1">
       <div>
@@ -64,7 +84,7 @@ const NavBar = () => {
       <div className="md:hidden">
         <MenuItems active={active} setActive={setActive} />
       </div>
-      <Button />
+      <ButtonGroup setActive={setActive} router={router} />
     </nav>
   );
 };
